@@ -131,7 +131,7 @@
             <thead class="thead-dark ">
 
             <tr >
-                <th>Code</th><th>Code Conventionné</th><th>Date Réception</th><th>Mois Bordereau</th><th>Année préstation</th><th>Montant Total</th><th>Date remise</th><th>Date envoi Conta</th><th>Date Remise Assistance</th><th>Date Retour Assistance</th>
+                <th>Code</th><th>Code Conventionné</th><th>Date Réception</th><th>Mois Bordereau</th><th>Année préstation</th><th>Montant Total</th><th>Montant Total Net</th><th>Date remise</th><th>Date envoi Conta</th><th>Date Remise Assistance</th><th>Date Retour Assistance</th>
             </tr>
 
             </thead>
@@ -145,6 +145,7 @@
                 <td th:text="${p.MonthSlip}"></td>
                 <td th:text="${p.YearSlip}"></td>
                 <td th:text="${p.TotalAmount}"></td>
+                <td th:text="${p.TotalAmountNet}"></td>
                 <td th:text="${p.changeDate}"></td>
                 <td th:text="${p.SendContability}"></td>
                 <td th:text="${p.SendAssistantDate}"></td>

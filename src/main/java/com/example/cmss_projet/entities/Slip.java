@@ -22,6 +22,7 @@ public class Slip  {
     public int MonthSlip;
     public int YearSlip;
     public float TotalAmount;
+    public float TotalAmountNet;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     public LocalDate ChangeDate;
     public LocalDate SendContability;

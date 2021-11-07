@@ -31,10 +31,11 @@ $(document).ready(function () {
 
             var agent = $("#Agent").val();
             var ascendant  = $("#Ascendant").val();
+            var precompte=$("#precompte").val();
             var totalamount = $("#amount").val();
 
 
-            if(Number(totalamount)===Number(agent)+Number(ascendant)){
+            if(Number(totalamount)===Number(agent)+Number(ascendant)+Number(precompte)){
                 $('#ajouterbutton').prop('disabled', false);
             }else {
                 $('#ajouterbutton').prop('disabled', true);

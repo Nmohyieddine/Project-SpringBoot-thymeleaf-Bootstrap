@@ -119,7 +119,7 @@
         <div class="card-body">
             <table class="table table-bordered table-hover">
                 <tr>
-                    <th>Code Facture</th><th>Code Bordereau</th><th>Régie</th><th>Montant</th><th>Agent</th><th>Ascendant</th><th>Date envoi Contabilité</th>
+                    <th>Code Facture</th><th>Code Bordereau</th><th>Régie</th><th>Montant</th><th>Agent</th><th>Ascendant</th><th>Précompte</th>
                 </tr>
                 <tr th:each="p:${invoices}">
                     <td th:text="${p.invoiceCode}"></td>
@@ -128,6 +128,7 @@
                     <td th:text="${p.amount}"></td>
                     <td th:text="${p.Agent}"></td>
                     <td th:text="${p.Ascendant}"></td>
+                    <td th:text="${p.precompte}"></td>
 
 
                 </tr>

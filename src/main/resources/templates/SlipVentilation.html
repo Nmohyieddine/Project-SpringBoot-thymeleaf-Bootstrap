@@ -113,6 +113,7 @@
 </nav>
 
 
+
 <div class="container mt-5">
 
     <div class="card">
@@ -131,7 +132,7 @@
             <thead >
 
             <tr >
-                <th>Code</th><th>Code Conventionné</th><th>Date Réception</th><th>Mois Bordereau</th><th>Année préstation</th><th>Montant Total</th><th>Date remise</th><th>Date Remise Assistance</th><th>Date Retour Assistance</th>
+                <th>Code</th><th>Code Conventionné</th><th>Date Réception</th><th>Mois Bordereau</th><th>Année préstation</th><th>Montant Total</th><th>Montant Total Net</th><th>Date remise</th><th>Date Remise Assistance</th><th>Date Retour Assistance</th>
             </tr>
 
             </thead>
@@ -145,15 +146,55 @@
                 <td th:text="${p.MonthSlip}"></td>
                 <td th:text="${p.YearSlip}"></td>
                 <td th:text="${p.TotalAmount}"></td>
+                <td th:text="${p.TotalAmountNet}"></td>
                 <td th:text="${p.changeDate}"></td>
                 <td th:text="${p.SendAssistantDate}"></td>
                 <td th:text="${p.BackAssistantDate}"></td>
                 <td>
                     <div class="btn-group">
-                        <a th:href="@{findOneSlip(id=${p.slipCode})}"  class="btn btn-primary float-lg-end" >Ventiler</a>
+                        <a th:href="@{findOneSlip(id=${p.slipCode})}"  th:class="${p.TotalAmountNet==0?'btn btn-secondary disabled ':'btn btn-primary '}"  >Ventiler</a>
+                        <button  class="btn btn-warning float-lg-end" data-bs-toggle="modal"   th:attr="data-bs-target='#mymodelCompleter'+${p.slipCode}">Compléter</button>
 
 
                     </div>
+
+                    <!-- modal Compéter -->
+                    <div class="MyformAdd" >
+                        <form th:action="@{/saveComplete}"   method="post">
+                            <div class="modal fade"  th:id="'mymodelCompleter'+${p.slipCode}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabelComplete">New message</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <input type="hidden" class="form-control" id="slipCodeComplete" name="slipCodeComplete" th:value="${p.slipCode}" >
+
+                                        </div>
+
+                                        <div class="modal-body">
+
+                                            <div class="mb-3">
+
+                                                <label for="TotalAmountNet" class="col-form-label">Montant Totale Net</label>
+                                                <input type="number" class="form-control" id="TotalAmountNet" name="TotalAmountNet" required >
+
+                                            </div>
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                                            <button type="submit" class="btn btn-primary" >Enregistrer</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+
 
                 </td>
             </tr>

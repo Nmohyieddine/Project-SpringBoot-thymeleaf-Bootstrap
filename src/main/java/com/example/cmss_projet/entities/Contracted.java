@@ -14,14 +14,16 @@ import java.util.List;
 public class Contracted{
      @Id
      @GeneratedValue(strategy = GenerationType.IDENTITY)
+
      private Long id;
-     //private String contractedCode;
+     private String contractedCode;
      private String denomination;
      private String Speciality;
      private String City;
      private String Mail;
      private String PhoneNumber;
      private int DurationToPay;
+
 
      @OneToMany(mappedBy = "contracted")
      private List<Slip> Slip;

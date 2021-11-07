@@ -52,7 +52,7 @@ public class InvoiceController {
 
         model.addAttribute("SumMontant",invoiceRepositorie.sumamount(id));
 
-        model.addAttribute("montantBordereau",slip.TotalAmount);
+        model.addAttribute("montantBordereau",slip.TotalAmountNet);
 
 
         return "Ventilation";

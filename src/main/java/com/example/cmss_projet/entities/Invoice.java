@@ -23,6 +23,7 @@ public class Invoice {
     public float amount;
     public float Agent;
     public float Ascendant;
+    public float precompte;
     @Column(columnDefinition = "integer default 0")
     public int status;
 

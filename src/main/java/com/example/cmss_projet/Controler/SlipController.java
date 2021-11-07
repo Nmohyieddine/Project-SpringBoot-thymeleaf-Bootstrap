@@ -57,6 +57,14 @@ public class SlipController {
         return "redirect:/Slip";
 
     }
+    @PostMapping(path = "/saveComplete")
+    public String saveComplete(@RequestParam(name = "slipCodeComplete") Long slipcode,@RequestParam(name = "TotalAmountNet") Float totalamountnet){
+        Slip slip=slipRepositorie.findBySlipCode(slipcode);
+        slip.setTotalAmountNet(totalamountnet);
+        slipRepositorie.save(slip);
+
+        return "redirect:/SlipVentilation";
+    }
 
 
     @GetMapping(path = "/SlipVentiler")

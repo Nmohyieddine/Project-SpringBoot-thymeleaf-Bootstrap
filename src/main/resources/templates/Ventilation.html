@@ -71,7 +71,7 @@
         <div class="card-body">
             <table class="table table-bordered table-hover" th:object="${SlipVentiler}" >
                 <tr>
-                    <th>Code</th><th>Code Conventionné</th><th>Date Réception</th><th>Mois Bordereau</th><th>Année préstation</th><th>Montant Total</th><th>Date remise</th><th>Date Remise Assistance</th><th>Date Retour Assistance</th>
+                    <th>Code</th><th>Code Conventionné</th><th>Date Réception</th><th>Mois Bordereau</th><th>Année préstation</th><th>Montant Total</th><th>Montant Total Net</th><th>Date remise</th><th>Date Remise Assistance</th><th>Date Retour Assistance</th>
                 </tr>
                 <tr >
                     <td th:text="${SlipVentiler.get().slipCode}"></td>
@@ -80,6 +80,8 @@
                     <td th:text="${SlipVentiler.get().MonthSlip}"></td>
                     <td th:text="${SlipVentiler.get().YearSlip}"></td>
                     <td th:text="${SlipVentiler.get().TotalAmount}"></td>
+                    <td th:text="${SlipVentiler.get().TotalAmountNet}"></td>
+
 
 
 
@@ -87,7 +89,7 @@
             </table>
             <table class="table table-bordered table-hover">
                 <tr>
-                    <th>Code</th><th>Code bordereau</th><th>Régie</th><th>Montant</th><th>Agent</th><th>Ascendant</th><th>Date envoi contabilité</th>
+                    <th>Code</th><th>Code bordereau</th><th>Régie</th><th>Montant</th><th>Agent</th><th>Ascendant</th><th>Précompte</th>
 
 
                 <tr th:each="p:${invoices}">
@@ -97,6 +99,7 @@
                     <td th:text="${p.amount}"></td>
                     <td th:text="${p.Agent}"></td>
                     <td th:text="${p.Ascendant}"></td>
+                    <td th:text="${p.precompte}"></td>
 
 
 
@@ -146,6 +149,11 @@
                         <input class="form-control" type="number" placeholder="Ascendant"  id="Ascendant" name="Ascendant" required>
                     </div>
 
+                    <div class="col">
+                        <label for="precompte" class="col-form-label">PréCompte</label>
+                        <input class="form-control" type="number" placeholder="Ascendant"  id="precompte" name="precompte" required>
+                    </div>
+
 
 
                     <div class="col-auto">
@@ -153,7 +161,7 @@
                     </div>
 
                     <div class="col-auto" >
-                        <a th:href="@{/Valider(id=${ActualSlipVentilation.slipCode})}" th:class="${SumMontant==montantBordereau?'btn btn-primary':'btn btn-secondary disabled'}"    >Valider</a>
+                        <a th:href="@{/Valider(id=${ActualSlipVentilation.slipCode})}" th:class="${SumMontant==montantBordereau?'btn btn-sucess':'btn btn-secondary disabled'}"    >Valider</a>
                     </div>
 
 
