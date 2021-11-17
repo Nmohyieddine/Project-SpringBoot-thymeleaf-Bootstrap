@@ -44,6 +44,9 @@ public interface SlipRepositorie extends JpaRepository<Slip,Long> {
 
     List<Slip> findByStatusPaiementAndContractedCode(int StatusPaiement,String ContractedCode);
 
+    @Query("select s.MonthSlip from Slip s where s.YearSlip=?1 ")   
+    List<Integer> ListOfMonthByYear(Long Year);
+
 
 
 

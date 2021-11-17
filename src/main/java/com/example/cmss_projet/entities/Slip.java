@@ -36,9 +36,6 @@ public class Slip  {
     public int statusPaiement;
     public int Numerocheque;
 
-    @ManyToOne()
-    private Contracted contracted ;
-
 
 
 }

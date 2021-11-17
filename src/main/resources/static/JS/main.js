@@ -1,5 +1,27 @@
 $(document).ready(function () {
 
+    $('#ajouterbutton').prop('disabled',true);
+
+    $("input[type='number']").change(function () {
+
+        var agent = $("#Agent").val();
+        var ascendant  = $("#Ascendant").val();
+        var precompte=$("#precompte").val();
+        var totalamount = $("#amount").val();
+
+
+        if(Number(totalamount)===Number(agent)+Number(ascendant)+Number(precompte)){
+            $('#ajouterbutton').prop('disabled', false);
+        }else {
+            $('#ajouterbutton').prop('disabled', true);
+
+        }
+
+    });
+
+
+    $('select').selectpicker();
+
     $('#confirmButton').prop('disabled',true);
     $("input[type='checkbox']").change(function () {
 
@@ -22,26 +44,6 @@ $(document).ready(function () {
             });
 
         }
-    });
-
-
-    $('#ajouterbutton').prop('disabled',true);
-
-    $("input[type='number']").change(function () {
-
-            var agent = $("#Agent").val();
-            var ascendant  = $("#Ascendant").val();
-            var precompte=$("#precompte").val();
-            var totalamount = $("#amount").val();
-
-
-            if(Number(totalamount)===Number(agent)+Number(ascendant)+Number(precompte)){
-                $('#ajouterbutton').prop('disabled', false);
-            }else {
-                $('#ajouterbutton').prop('disabled', true);
-
-            }
-
     });
 
 

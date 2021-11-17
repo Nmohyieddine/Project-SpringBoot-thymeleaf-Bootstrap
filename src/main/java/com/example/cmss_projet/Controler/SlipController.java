@@ -52,7 +52,13 @@ public class SlipController {
     @PostMapping(path = "/saveSlip")
     public String saveSlip(Slip slip) {
 
+
         slipRepositorie.save(slip);
+
+        //Contracted contracted=contractedRepositorie.findByContractedCode(slip.contractedCode);
+        //contracted.getSlip().add(slip);
+
+
 
         return "redirect:/Slip";
 
@@ -99,6 +105,7 @@ public class SlipController {
         model.addAttribute("SlipsPaiement",slipsPaiement.getContent());
         model.addAttribute("currentpageslipPaiement",page);
         model.addAttribute("pageslipPaiement",new int[slipsPaiement.getTotalPages()] );
+
 
 
 

@@ -7,6 +7,7 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -16,7 +17,7 @@ public class Contracted{
      @GeneratedValue(strategy = GenerationType.IDENTITY)
 
      private Long id;
-     private String contractedCode;
+     public String contractedCode;
      private String denomination;
      private String Speciality;
      private String City;
@@ -25,7 +26,9 @@ public class Contracted{
      private int DurationToPay;
 
 
-     @OneToMany(mappedBy = "contracted")
-     private List<Slip> Slip;
+     @OneToMany(
+             cascade = CascadeType.ALL,
+             orphanRemoval = true)
+     private List<Slip> Slip =new ArrayList<>();
 
 }
