@@ -46,8 +46,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests().antMatchers("/PaiementSlip","/PayedSlip","/Bankcheck").hasRole("CONTA");
         http.authorizeRequests().antMatchers("/SlipVentilation","/SlipVentiler","/AllInvoiceVentilated","/exportSlipVentiler").hasRole("VENTILATION");
-        http.authorizeRequests().antMatchers("/Slip").hasRole("BUREAUDORDRE");
-        http.authorizeRequests().antMatchers("/Contracted").hasRole("CONFIGURA");
+        http.authorizeRequests().antMatchers("/Slip","/Consultation").hasRole("BUREAUDORDRE");
+        http.authorizeRequests().antMatchers("/Contracted").hasRole("BUREAUCONFIG");
 
 
 

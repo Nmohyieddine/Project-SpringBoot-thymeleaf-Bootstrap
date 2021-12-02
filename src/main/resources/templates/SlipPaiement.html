@@ -10,6 +10,7 @@
     <script type="text/javascript" src="../static/JS/main.js"></script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="../static/CSS/main.css" rel="stylesheet">
 
     <title>Title</title>
 </head>
@@ -22,14 +23,14 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabelPaiement">New message</h5>
+                        <h5 class="modal-title" id="exampleModalLabelPaiement">Export Borderaux</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
 
 
                         <div class="mb-3">
-                            <label for="StatusPaiement" class="col-form-label">StatusPaiement</label>
+                            <label for="StatusPaiement" class="col-form-label">Status de Paiement</label>
                             <select id="StatusPaiement" name="StatusPaiement"  class="form-select" aria-label="Default select example">
                                 <option th:value="1" th:text="Payer"></option>
                                 <option th:value="0" th:text="NonPayer"></option>
@@ -38,7 +39,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="Conventionne" class="col-form-label">Code conventionné</label>
+                            <label for="Conventionne" class="col-form-label">conventionné</label>
                             <select id="Conventionne" name="Conventionne"  class="form-select" aria-label="Default select example">
                                 <option th:value="false" th:text="Tout" selected="selected"></option>
                                 <option th:each="i : ${conventionne}" th:value="${i.contractedCode}" th:text="${i.denomination}">
@@ -51,7 +52,7 @@
 
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-                            <button type="submit" class="btn btn-primary" >Enregistrer</button>
+                            <button type="submit" class="btn btn-primary" >Exporter</button>
                         </div>
                     </div>
                 </div>
@@ -60,7 +61,7 @@
     </form>
 </div>
 
-<!-- modal -->
+<!-- modal Aproche abondonné-->
 <div class="MyformSlipPaiement" >
     <form id="formmodal" th:action="@{/saveBankcheck}"   method="post">
         <div class="modal fade" id="modelSlipPaiement" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -113,7 +114,10 @@
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">Navbar</a>
+        <a class="navbar-brand" th:href="@{/PaiementSlip}">
+            <img src="../static/material/CMSS_LOGO.png"  width="30" height="30" class="d-inline-block align-top" alt="">
+            CMSS
+        </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -123,10 +127,10 @@
                     <a class="nav-link active" aria-current="page" th:href="@{/PaiementSlip}">Payement</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/PayedSlip}">déjà Payer</a>
+                    <a class="nav-link" th:href="@{/PayedSlip}">Déjà Payer</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/Bankcheck}">Chéque</a>
+                    <a class="nav-link" th:href="@{/Bankcheck}">Chéques</a>
                 </li>
 
             </ul>
@@ -135,7 +139,7 @@
 
 
         <div class="btn-toolbar d-flex" >
-            <ul class="navbar-nav">
+            <ul class="navbar-nav Mycss">
                 <li class="nav-item">
                     <a th:href="@{/PaiementSlip}" class="btn btn-outline-warning" >Rafréchir</a>
 
@@ -154,7 +158,8 @@
                 <li class="nav-item ">
                     <form th:action="@{/logout}" method="post">
 
-                        <input type="submit" class="btn btn-outline-danger">POST LOGOUT</input>
+                        <button type="submit" class="btn btn-outline-danger">Déconnection</button>
+
                     </form>
                 </li>
             </ul>

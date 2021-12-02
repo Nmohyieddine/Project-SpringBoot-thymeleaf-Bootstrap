@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,13 +33,22 @@ public  class Services {
         slipRepositorie.save(s);
 
     }
-    public void changestatusSlip(List<Long> slipsid){
+    public void changestatusSlip(ArrayList<Long> slipsid){
         List<Slip> slip=slipRepositorie.findBySlipCodeIn(slipsid);
         for (Slip slip1 : slip){
             slip1.setStatusPaiement(1);
             slipRepositorie.save(slip1);
         }
 
+    }
+
+    public void changestatusSlipObject(ArrayList<Slip> slipList){
+
+        for(Slip slip:slipList){
+
+            changestatusSlip(slip.slipCode);
+
+        }
     }
     public void changestatusInvoice(Long id){
         List<Invoice> invoices=invoiceRepositorie.findInvoiceBySlipCode(id);
@@ -89,7 +99,7 @@ public  class Services {
 
     }
 
-    public void bankcheckslip(Bankcheck bankcheck,List<Slip> slips){
+    public void bankcheckslip(Bankcheck bankcheck,ArrayList<Slip> slips){
 
 
         for(Slip s:slips){
@@ -99,6 +109,8 @@ public  class Services {
 
 
     }
+
+
 
 
 }

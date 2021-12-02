@@ -42,11 +42,15 @@ public class InvoiceExport {
         cell=row.createCell(3);
         cell.setCellValue("Montant");
 
+
         cell=row.createCell(4);
         cell.setCellValue("Agent");
 
         cell=row.createCell(5);
         cell.setCellValue("Ascendant");
+
+        cell=row.createCell(6);
+        cell.setCellValue("Précompte");
 
 
 
@@ -78,6 +82,9 @@ public class InvoiceExport {
 
             cell=row.createCell(5);
             cell.setCellValue(invoice.Ascendant);
+
+            cell=row.createCell(6);
+            cell.setCellValue(invoice.precompte);
 
 
 

@@ -31,14 +31,14 @@ public class ExportControler {
 
 
     @PostMapping("/exportSlipVentiler")
-    public void exportToExcelVentiler(HttpServletResponse response, @RequestParam(value = "StatusPaiement") int StatusVentilation,@RequestParam(value = "Conventionne")String conventionne) throws IOException {
+    public void exportToExcelVentiler(HttpServletResponse response, @RequestParam(value = "StatusPaiement") int StatusVentilation,@RequestParam(value = "Conventionne") String conventionne) throws IOException {
 
         response.setContentType("application/octet-stream");
         String headerKey = "Content-Disposition";
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
         String currentDateTime = dateFormatter.format(new Date());
 
-        if(!conventionne.equals("true")){
+        if(conventionne.equals("false")){
             if(StatusVentilation==1){
                 String headerValue = "attachment; filename=BordereauxVentiler" +currentDateTime+".xlsx";
                 response.setHeader(headerKey, headerValue);

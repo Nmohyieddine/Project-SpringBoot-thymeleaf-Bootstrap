@@ -20,7 +20,6 @@ $(document).ready(function () {
     });
 
 
-    $('select').selectpicker();
 
     $('#confirmButton').prop('disabled',true);
     $("input[type='checkbox']").change(function () {
@@ -90,6 +89,9 @@ $(document).ready(function () {
             });
 
     });
+
+    $('select').selectpicker();
+
 
 
 

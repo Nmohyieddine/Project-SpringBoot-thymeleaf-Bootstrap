@@ -25,7 +25,7 @@ public class CustomLoginSuccesHandler implements AuthenticationSuccessHandler {
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         for (GrantedAuthority grantedAuthority : authorities) {
             System.out.println("role " + grantedAuthority.getAuthority());
-            if (grantedAuthority.getAuthority().equals("ROLE_CONFIGURA")) {
+            if (grantedAuthority.getAuthority().equals("ROLE_BUREAUCONFIG")) {
                 redirectUrl = "/Contracted";
                 break;
             }if (grantedAuthority.getAuthority().equals("ROLE_BUREAUDORDRE")) {

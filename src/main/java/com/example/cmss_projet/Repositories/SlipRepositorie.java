@@ -52,4 +52,7 @@ public interface SlipRepositorie extends JpaRepository<Slip,Long> {
 
 
 
+
+
+
 }

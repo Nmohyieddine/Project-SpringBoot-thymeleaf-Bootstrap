@@ -11,8 +11,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,17 +54,19 @@ public class SlipController {
 
 
     @PostMapping(path = "/saveSlip")
-    public String saveSlip(Slip slip) {
+    public String saveSlip(@Valid @ModelAttribute("slip") Slip slip, BindingResult result , Model model) {
+        if(result.hasErrors()){
 
 
-        slipRepositorie.save(slip);
+        }else {
+            slipRepositorie.save(slip);
+
+        }
+        return "redirect:/Slip";
+
 
         //Contracted contracted=contractedRepositorie.findByContractedCode(slip.contractedCode);
         //contracted.getSlip().add(slip);
-
-
-
-        return "redirect:/Slip";
 
     }
     @PostMapping(path = "/saveComplete")
@@ -115,7 +121,7 @@ public class SlipController {
 
 
     @PostMapping(path = "/Payer")
-    public String Payer(@RequestParam(value = "slipPaiementcode",defaultValue = "[]") List<Long> slipPaiement){
+    public String Payer(@RequestParam(value = "slipPaiementcode",defaultValue = "[]") ArrayList<Long> slipPaiement){
             services.changestatusSlip(slipPaiement);
 
             return "redirect:/PaiementSlip";

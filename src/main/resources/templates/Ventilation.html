@@ -23,7 +23,12 @@
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">Navbar</a>
+
+        <a class="navbar-brand" th:href="@{/Slip}">
+            <img src="../static/material/CMSS_LOGO.png"  width="30" height="30" class="d-inline-block align-top" alt="">
+            CMSS
+        </a>
+
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -51,7 +56,7 @@
                 <li class="nav-item ">
                     <form th:action="@{/logout}" method="post">
 
-                        <input type="submit" class="btn btn-outline-danger">POST LOGOUT</input>
+                        <button type="submit" class="btn btn-outline-danger">Déconnection</button>
                     </form>
                 </li>
             </ul>
@@ -89,7 +94,7 @@
             </table>
             <table class="table table-bordered table-hover">
                 <tr>
-                    <th>Code</th><th>Code bordereau</th><th>Régie</th><th>Montant</th><th>Agent</th><th>Ascendant</th><th>Précompte</th>
+                    <th>Code</th><th>Code bordereau</th><th>Régie</th><th>Montant</th><th>Agent</th><th>Ascendant</th><th>Précompte</th><th>Suprimer</th>
 
 
                 <tr th:each="p:${invoices}">
@@ -129,7 +134,6 @@
                     <div class="col">
                         <label for="Regie" class="col-form-label">Régie</label>
                         <select id="Regie" name="Regie"  class="form-select" aria-label="Default select example">
-                            <option  th:text="Regie" selected="selected"></option>
                             <option th:each="i : ${regies}" th:value="${i.RegieName}" th:text="${i.RegieName}">
                             </option>
                         </select>
@@ -161,7 +165,7 @@
                     </div>
 
                     <div class="col-auto" >
-                        <a th:href="@{/Valider(id=${ActualSlipVentilation.slipCode})}" th:class="${SumMontant==montantBordereau?'btn btn-sucess':'btn btn-secondary disabled'}"    >Valider</a>
+                        <a th:href="@{/Valider(id=${ActualSlipVentilation.slipCode})}" th:class="${SumMontant==montantBordereau?'btn btn-success':'btn btn-secondary disabled'}"    >Valider</a>
                     </div>
 
 

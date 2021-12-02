@@ -14,9 +14,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,12 +58,17 @@ public class SlipVentilationControler {
     }
 
     @GetMapping(path = "/SlipBankCheck")
-    public String SlipBankcheck(@RequestParam(value = "slipPaiementcode",defaultValue = "[]") List<Long> slipPaiement, Model model){
+    public String SlipBankcheck(@ModelAttribute("slipPaiementcode") final ArrayList<Long> slipPaiement
+            , Model model
+            ,final RedirectAttributes redirectAttributes
+            ){
 
 
 
-        List<Slip> Slips=slipRepositorie.findBySlipCodeIn(slipPaiement);
+        List<Slip> Slips= slipRepositorie.findBySlipCodeIn(slipPaiement);
         model.addAttribute("slipbankcheck",Slips);
+
+        redirectAttributes.addFlashAttribute("redirectSlipbankcheck", Slips);
     /*
         int size=slipPaiement.size();
 

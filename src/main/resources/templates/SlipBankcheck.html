@@ -49,7 +49,7 @@
         </div>
         <div class="card-footer">
             <!-- th:object="${formSlip}"-->
-            <form  th:action="@{/saveBankcheck}"  method="post"  >
+            <form  th:action="@{/saveBankcheck}"   method="post"  >
                 <div class="row" id="ligne1">
 
                     <div class="col">
@@ -73,21 +73,6 @@
                     </div>
 
 
-
-                <!--
-                    <div th:each="slip, itemStat : ${formSlip.slips}">
-
-                        <div>
-                            <input hidden th:name="|slips[${itemStat.index}].slipCode|" th:value="${slip.slipCode}"/>
-                        </div>
-
-                        <div>
-                            <input th:name="|slips[${itemStat.index}].contractedCode|" th:value="${slip.contractedCode}"/>
-                        </div>
-
-                    </div>
-
-                -->
 
 
 

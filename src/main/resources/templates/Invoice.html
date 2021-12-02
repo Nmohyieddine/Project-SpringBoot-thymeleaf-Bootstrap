@@ -10,6 +10,7 @@
 
     <script type="text/javascript" src="../static/JS/main.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="../static/CSS/main.css" rel="stylesheet">
 
     <title>Title</title>
 </head>
@@ -24,14 +25,14 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabelPaiement">New message</h5>
+                        <h5 class="modal-title" id="exampleModalLabelPaiement">Exportation details Bordereaux</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
 
 
                         <div class="mb-3">
-                            <label for="slipcode" class="col-form-label">Code conventionné</label>
+                            <label for="slipcode" class="col-form-label">Code Bordereau</label>
                             <select id="slipcode" name="slipcode"  class="form-select" aria-label="Default select example">
                                 <option th:value="false" th:text="Tout" selected="selected"></option>
                                 <option th:each="i : ${slips}" th:value="${i.slipCode}" th:text="${i.slipCode}">
@@ -44,7 +45,7 @@
 
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-                            <button type="submit" class="btn btn-primary" >Enregistrer</button>
+                            <button type="submit" class="btn btn-primary" >Exporter</button>
                         </div>
                     </div>
                 </div>
@@ -55,8 +56,13 @@
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">Navbar</a>
+
+        <a class="navbar-brand" th:href="@{/SlipVentilation}">
+            <img src="../static/material/CMSS_LOGO.png"  width="30" height="30" class="d-inline-block align-top" alt="">
+            CMSS
+        </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
@@ -65,10 +71,10 @@
                     <a class="nav-link active" aria-current="page" th:href="@{/SlipVentilation}">à ventiler</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/SlipVentiler}">déjà ventiler</a>
+                    <a class="nav-link" th:href="@{/SlipVentiler}">Déjà ventiler</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" aria-current="page"  th:href="@{/AllInvoiceVentilated}">Détail Ventilation</a>
+                    <a class="nav-link" aria-current="page"  th:href="@{/AllInvoiceVentilated}">Détails Ventilation</a>
                 </li>
 
 
@@ -78,7 +84,7 @@
 
 
         <div class="btn-toolbar d-flex" >
-            <ul class="navbar-nav">
+            <ul class="navbar-nav Mycss">
                 <li class="nav-item">
                     <a th:href="@{/PaiementSlip}" class="btn btn-outline-warning" >Rafréchir</a>
 
@@ -97,7 +103,7 @@
                 <li class="nav-item ">
                     <form th:action="@{/logout}" method="post">
 
-                        <input type="submit" class="btn btn-outline-danger">POST LOGOUT</input>
+                        <button type="submit" class="btn btn-outline-danger">Déconnection</button>
                     </form>
                 </li>
             </ul>
@@ -112,7 +118,7 @@
 <div class="container mt-5">
     <div class="card">
         <div class="card-header">
-            <h2 >Liste des Factures</h2>
+            <h2 >Détails Ventilation</h2>
             <button  class=" btn float-lg-end"  data-bs-toggle="modal" data-bs-target="#ExportInvoiceModal" ><i class="fa fa-file-excel-o" style="font-size:48px;color:green"></i></button>
 
         </div>

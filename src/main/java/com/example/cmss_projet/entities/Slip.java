@@ -7,6 +7,9 @@ import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Date;
@@ -19,7 +22,8 @@ public class Slip  {
     public String contractedCode;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     public LocalDate ReceptionDate;
-    public int MonthSlip;
+    @Min(2)
+    public Integer MonthSlip;
     public int YearSlip;
     public float TotalAmount;
     public float TotalAmountNet;

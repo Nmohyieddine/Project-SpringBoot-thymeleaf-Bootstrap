@@ -10,12 +10,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.GeneratedValue;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -47,9 +45,8 @@ public class BankcheckControler {
     /*
         @ModelAttribute SlipTdo form
      */
-
     @PostMapping(path = "/saveBankcheck")
-    public String saveSlip(Bankcheck bankcheck, Model model) {
+    public String saveSlip(@ModelAttribute("redirectSlipbankcheck") final ArrayList<Slip> slipPaiement,Bankcheck bankcheck, Model model) {
 
 
 
@@ -59,6 +56,9 @@ public class BankcheckControler {
 
 
         //services.bankcheckslip(bankcheck,form.getSlips());
+       services.changestatusSlipObject(slipPaiement);
+       services.bankcheckslip(bankcheck,slipPaiement);
+
 
 
         return "redirect:/Bankcheck";
