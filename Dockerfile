@@ -1,0 +1,4 @@
+FROM openjdk:11-jdk-alpine
+ARG JAR_FILE=target/CMSS_Projet-0.0.4-Beta.jar
+COPY ${JAR_FILE} app.jar
+ENTRYPOINT ["java","-jar","/app.jar"]

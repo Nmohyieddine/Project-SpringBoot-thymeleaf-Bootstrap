@@ -10,10 +10,10 @@
     </parent>
     <groupId>com.example</groupId>
     <artifactId>CMSS_Projet</artifactId>
-    <version>0.0.3-Beta</version>
+    <version>0.0.4-Beta</version>
     <name>CMSS_Projet</name>
     <description>CMSS_Projet</description>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <properties>
 
         <java.version>11</java.version>
