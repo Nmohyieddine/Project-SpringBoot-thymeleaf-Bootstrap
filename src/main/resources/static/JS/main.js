@@ -1,6 +1,25 @@
 $(document).ready(function () {
 
+    $('select').selectpicker();
+
     $('#ajouterbutton').prop('disabled',true);
+
+    $('input[type=button]').on('click' , function(){
+        var id=$(this).attr();
+        console.log("hello");
+        var ReceptionDate =$('#ReceptionDateEdit').val();
+        $('#ChangeDateEdit').attr('min',ReceptionDate);
+
+
+
+        $("#ReceptionDateEdit").change("input", function() {
+
+            var ReceptionDate =$(this).val();
+            $('#ChangeDateEdit').attr('min',ReceptionDate);
+
+        });
+
+    });
 
     $("input[type='number']").change(function () {
 
@@ -48,6 +67,8 @@ $(document).ready(function () {
 
 
 
+
+
     $(function () {
 
         $('#confirmButtonModalPaiement').on('click', function () {
@@ -73,24 +94,11 @@ $(document).ready(function () {
 
     });
 
-    $('input[type=button]').on('click' , function(){
-        var id=$(this).attr();
-
-            var ReceptionDate =$('#ReceptionDateEdit').val();
-            $('#ChangeDateEdit').attr('min',ReceptionDate);
 
 
 
-            $("#ReceptionDateEdit").change("input", function() {
 
-                var ReceptionDate =$(this).val();
-                $('#ChangeDateEdit').attr('min',ReceptionDate);
 
-            });
-
-    });
-
-    $('select').selectpicker();
 
 
 

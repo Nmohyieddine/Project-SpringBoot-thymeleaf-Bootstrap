@@ -42,12 +42,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.formLogin().loginPage("/login").successHandler(successHandler).and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login");
+        http.formLogin().loginPage("/login").successHandler(successHandler).and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login?logout");
 
         http.authorizeRequests().antMatchers("/PaiementSlip","/PayedSlip","/Bankcheck").hasRole("CONTA");
         http.authorizeRequests().antMatchers("/SlipVentilation","/SlipVentiler","/AllInvoiceVentilated","/exportSlipVentiler").hasRole("VENTILATION");
-        http.authorizeRequests().antMatchers("/Slip","/Consultation").hasRole("BUREAUDORDRE");
+        http.authorizeRequests().antMatchers("/Slip").hasRole("BUREAUDORDRE");
         http.authorizeRequests().antMatchers("/Contracted").hasRole("BUREAUCONFIG");
+        http.authorizeRequests().antMatchers("/Consultation").hasRole("CEO");
 
 
 

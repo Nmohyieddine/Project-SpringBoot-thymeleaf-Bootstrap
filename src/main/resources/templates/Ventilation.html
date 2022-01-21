@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<html lang="en"  xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -10,7 +10,12 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
+    <!--fontawesom-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- selectbootstrap-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta2/dist/css/bootstrap-select.min.css">
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta2/dist/js/bootstrap-select.min.js"></script>
 
     <script type="text/javascript" src="../static/JS/main.js"></script>
 
@@ -35,18 +40,24 @@
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link active" th:href="@{/SlipVentilation}">à ventiler</a>
+                    <a class="nav-link active" th:href="@{/SlipVentilation}">À Ventiler</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" aria-current="page"  th:href="@{/SlipVentiler}">déjà ventiler</a>
+                    <a class="nav-link" aria-current="page"  th:href="@{/SlipVentiler}">Déjà Ventilé</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" aria-current="page"  th:href="@{/AllInvoiceVentilated}">Détail Ventilation</a>
+                    <a class="nav-link" aria-current="page"  th:href="@{/AllInvoiceVentilated}">Détails de Ventilation</a>
                 </li>
 
 
             </ul>
 
+        </div>
+
+        <div sec:authorize="hasRole('BUREAUCONFIG')">
+            <a class="navbar-brand" th:href="@{/Contracted}">
+                <i class="fa fa-home"></i>
+            </a>
         </div>
 
 
@@ -56,7 +67,7 @@
                 <li class="nav-item ">
                     <form th:action="@{/logout}" method="post">
 
-                        <button type="submit" class="btn btn-outline-danger">Déconnection</button>
+                        <button type="submit" class="btn btn-outline-danger">Déconnexion</button>
                     </form>
                 </li>
             </ul>
@@ -76,18 +87,17 @@
         <div class="card-body">
             <table class="table table-bordered table-hover" th:object="${SlipVentiler}" >
                 <tr>
-                    <th>Code</th><th>Code Conventionné</th><th>Date Réception</th><th>Mois Bordereau</th><th>Année préstation</th><th>Montant Total</th><th>Montant Total Net</th><th>Date remise</th><th>Date Remise Assistance</th><th>Date Retour Assistance</th>
+                    <th>Code</th><th>Dénomination</th><th>Code Conventionné</th><th>Date Réception</th><th>Mois Bordereau</th><th>Année préstation</th><th>Montant Total</th><th>Montant Total Net</th><th>Date remise</th><th>Date Remise Assistance</th><th>Date Retour Assistance</th>
                 </tr>
                 <tr >
                     <td th:text="${SlipVentiler.get().slipCode}"></td>
+                    <td th:text="${SlipVentiler.get().ContractedName}"></td>
                     <td th:text="${SlipVentiler.get().contractedCode}"></td>
                     <td th:text="${SlipVentiler.get().ReceptionDate}"></td>
                     <td th:text="${SlipVentiler.get().MonthSlip}"></td>
                     <td th:text="${SlipVentiler.get().YearSlip}"></td>
                     <td th:text="${SlipVentiler.get().TotalAmount}"></td>
                     <td th:text="${SlipVentiler.get().TotalAmountNet}"></td>
-
-
 
 
                 </tr>
@@ -133,8 +143,8 @@
 
                     <div class="col">
                         <label for="Regie" class="col-form-label">Régie</label>
-                        <select id="Regie" name="Regie"  class="form-select" aria-label="Default select example">
-                            <option th:each="i : ${regies}" th:value="${i.RegieName}" th:text="${i.RegieName}">
+                        <select id="Regie" name="Regie"  class=" selectpicker" data-live-search="true"  title="Régie" data-width="auto" required >
+                            <option th:each="i : ${regies}" th:value="${i.RegieName}" th:text="${i.RegieName}" th:data-subtext="${i.Ville}">
                             </option>
                         </select>
                     </div>
@@ -156,6 +166,11 @@
                     <div class="col">
                         <label for="precompte" class="col-form-label">PréCompte</label>
                         <input class="form-control" type="number" placeholder="Precompte"  id="precompte" name="precompte" required>
+                    </div>
+
+                    <div class="col">
+
+                        <input class="form-control"  id="ContractedName" name="ContractedName" th:value="${ActualSlipVentilation.ContractedName}" hidden>
                     </div>
 
 

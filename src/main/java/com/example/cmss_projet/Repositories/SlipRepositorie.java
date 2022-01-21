@@ -7,10 +7,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 
 import javax.swing.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -27,6 +29,12 @@ public interface SlipRepositorie extends JpaRepository<Slip,Long> {
 
     @Query("select p from Slip p where p.status=?2 and p.statusPaiement=?3 and p.contractedCode like %?1%")
     Page<Slip> chercher(String keyword,int Status,int StatusPaiement,Pageable pageable);
+
+    @Query("select p from Slip p where   p.contractedCode like %?1%")
+    Page<Slip> chercherAll(String keyword,Pageable pageable);
+
+    @Query("select p from Slip p where  p.status=?2 and p.contractedCode like %?1%")
+    Page<Slip> chercherAllVentiler(String keyword,int status,Pageable pageable);
 
 
     List<Slip> findBySlipCodeIn(List<Long> listLong);
@@ -50,9 +58,18 @@ public interface SlipRepositorie extends JpaRepository<Slip,Long> {
 
 
 
+    @Query("select S from Slip S where S.contractedCode=?2 and S.statusPaiement=?1 and S.ReceptionDate between ?3 and ?4")
+     List<Slip> SlipPaiementwithDate(int statusPaiement,String contracted,LocalDate dateBefore,LocalDate dateAfter);
+
+    @Query("select S from Slip S where S.contractedCode=?2 and S.status=?1 and S.ReceptionDate between ?3 and ?4")
+    List<Slip> SlipVentilationWithDate(int status, String contracted, LocalDate dateBefore, LocalDate dateAfter);
 
 
+    @Query("select S from Slip S where  S.statusPaiement=?1 and S.ReceptionDate between ?2 and ?3")
+    List<Slip> SlipPaiementwithDateAll(int statusPaiement,LocalDate dateBefore,LocalDate dateAfter);
 
+    @Query("select S from Slip S where S.status=?1 and S.ReceptionDate between ?2 and ?3")
+    List<Slip> SlipVentilationWithDateAll(int status, LocalDate dateBefore, LocalDate dateAfter);
 
 
 }

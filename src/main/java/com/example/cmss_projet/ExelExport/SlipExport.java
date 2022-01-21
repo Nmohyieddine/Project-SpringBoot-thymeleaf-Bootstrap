@@ -37,30 +37,36 @@ public class SlipExport {
         cell.setCellValue("Code Borderau");
 
         cell=row.createCell(1);
-        cell.setCellValue("Code conventionne");
+        cell.setCellValue("Dénomination");
 
         cell=row.createCell(2);
-        cell.setCellValue("Date de reception");
+        cell.setCellValue("Code conventionne");
 
         cell=row.createCell(3);
-        cell.setCellValue("Mois Borderau");
+        cell.setCellValue("Date de reception");
 
         cell=row.createCell(4);
-        cell.setCellValue("Année Bordereau");
+        cell.setCellValue("Mois Borderau");
 
         cell=row.createCell(5);
-        cell.setCellValue("Montant Total");
+        cell.setCellValue("Année Bordereau");
 
         cell=row.createCell(6);
-        cell.setCellValue("Date Rectif");
+        cell.setCellValue("Montant Total");
 
         cell=row.createCell(7);
-        cell.setCellValue("Date envoi contabilité");
+        cell.setCellValue("Montant Net");
 
         cell=row.createCell(8);
-        cell.setCellValue("Date envoi assistance");
+        cell.setCellValue("Date Rectif");
 
         cell=row.createCell(9);
+        cell.setCellValue("Date envoi contabilité");
+
+        cell=row.createCell(10);
+        cell.setCellValue("Date envoi assistance");
+
+        cell=row.createCell(11);
         cell.setCellValue("Date reception assistance");
 
 
@@ -73,6 +79,10 @@ public class SlipExport {
 
     private void writeDataRows() {
         int rowCounter=1;
+        CellStyle cellStyle = workbook.createCellStyle();
+        CreationHelper createHelper = workbook.getCreationHelper();
+        cellStyle.setDataFormat(createHelper.createDataFormat().getFormat("yyyy-m-d"));
+
 
 
 
@@ -83,34 +93,47 @@ public class SlipExport {
             cell.setCellValue(slip.slipCode);
 
             cell=row.createCell(1);
-            cell.setCellValue(slip.contractedCode);
+            cell.setCellValue(slip.ContractedName);
 
             cell=row.createCell(2);
-            cell.setCellValue((LocalDate) slip.ReceptionDate);
-
+            cell.setCellValue(slip.contractedCode);
 
             cell=row.createCell(3);
-            cell.setCellValue(slip.MonthSlip);
+            cell.setCellValue(slip.ReceptionDate);
+            cell.setCellStyle(cellStyle);
+
 
             cell=row.createCell(4);
-            cell.setCellValue(slip.YearSlip);
+            cell.setCellValue(slip.MonthSlip);
 
             cell=row.createCell(5);
-            cell.setCellValue(slip.TotalAmount);
+            cell.setCellValue(slip.YearSlip);
 
             cell=row.createCell(6);
-            cell.setCellValue(slip.ChangeDate);
-
+            cell.setCellValue(slip.TotalAmount);
 
             cell=row.createCell(7);
-            cell.setCellValue(slip.SendContability);
-
+            cell.setCellValue(slip.TotalAmountNet);
 
             cell=row.createCell(8);
-            cell.setCellValue(slip.SendAssistantDate);
+            cell.setCellValue(slip.ChangeDate);
+            cell.setCellStyle(cellStyle);
+
 
             cell=row.createCell(9);
+            cell.setCellValue(slip.SendContability);
+            cell.setCellStyle(cellStyle);
+
+
+            cell=row.createCell(10);
+            cell.setCellValue(slip.SendAssistantDate);
+            cell.setCellStyle(cellStyle);
+
+
+            cell=row.createCell(11);
             cell.setCellValue(slip.BackAssistantDate);
+            cell.setCellStyle(cellStyle);
+
 
 
 

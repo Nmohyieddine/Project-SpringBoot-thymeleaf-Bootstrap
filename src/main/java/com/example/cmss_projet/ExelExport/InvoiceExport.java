@@ -31,16 +31,16 @@ public class InvoiceExport {
 
         Row row = sheet.createRow(0);
         Cell cell=row.createCell(0);
-        cell.setCellValue("Invoice Code");
+        cell.setCellValue("Code Facture");
 
         cell=row.createCell(1);
-        cell.setCellValue("Slip Code");
+        cell.setCellValue("Code Bordereau");
 
         cell=row.createCell(2);
         cell.setCellValue("Régie");
 
         cell=row.createCell(3);
-        cell.setCellValue("Montant");
+        cell.setCellValue("Montant Facture");
 
 
         cell=row.createCell(4);

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <script type="text/javascript" src="webjars/jquery/3.5.1/dist/jquery.min.js"></script>
@@ -10,6 +10,15 @@
 
     <script type="text/javascript" src="../static/JS/main.js"></script>
     <link href="../static/CSS/main.css" rel="stylesheet">
+
+    <!--fontawesom-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- selectbootstrap-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta2/dist/css/bootstrap-select.min.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta2/dist/js/bootstrap-select.min.js"></script>
+
 
     <title>Title</title>
 </head>
@@ -32,7 +41,7 @@
                     <a class="nav-link active"  th:href="@{/PaiementSlip}">Paiement</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" aria-current="page" th:href="@{/PayedSlip}">Déjà Payer</a>
+                    <a class="nav-link" aria-current="page" th:href="@{/PayedSlip}">Déjà Payé</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/Bankcheck}">Chéques</a>
@@ -42,17 +51,28 @@
 
         </div>
 
+        <div sec:authorize="hasRole('BUREAUCONFIG')">
+            <a class="navbar-brand" th:href="@{/Contracted}">
+                <i class="fa fa-home"></i>
+            </a>
+        </div>
+
 
         <div class="btn-toolbar d-flex" >
             <ul class="navbar-nav Mycss">
                 <li class="nav-item">
-                    <a th:href="@{/PaiementSlip}" class="btn btn-outline-warning" >Rafréchir</a>
+                    <a th:href="@{/PayedSlip}" class="btn btn-outline-warning" >Rafréchir</a>
 
                 </li>
                 <li class="nav-item">
-                    <form th:action="@{/PaiementSlip}" class="d-flex" >
-                        <input class="form-control me-2" type="search" placeholder="Search" id="keyword" name="keyword" aria-label="Search">
-                        <button class="btn btn-outline-success" type="submit">Search</button>
+                    <form th:action="@{/PayedSlip}" class="d-flex" >
+
+                        <select id="contractedCodeSearch" name="keyword"  class="selectpicker form-control me-2 " data-live-search="true"  title="Rechercher" data-width="auto"  >
+
+                            <option th:each="i : ${conventionne}" th:value="${i.contractedCode}" th:text="${i.denomination} " th:data-subtext="${i.city}">
+                            </option>
+                        </select>
+                        <button class="btn btn-outline-success" type="submit">Recherche</button>
 
 
                     </form>
@@ -63,7 +83,7 @@
                 <li class="nav-item ">
                     <form th:action="@{/logout}" method="post">
 
-                        <button type="submit" class="btn btn-outline-danger">Déconnection</button>
+                        <button type="submit" class="btn btn-outline-danger">Déconnexion</button>
                     </form>
                 </li>
             </ul>
@@ -77,18 +97,19 @@
 <div class="container mt-5">
     <div class="card">
         <div class="card-header">
-            <h2 >Bordereaux Payé</h2>
+            <h2 >Bordereaux Payés</h2>
         </div>
         <div class="card-body">
 
                 <table class="table table-bordered table-hover">
 
                     <tr>
-                        <th>Code Bordereau</th><th>Code Conventionné</th><th>Date Réception</th><th>Montant</th><th>Mois</th><th>Année</th><th>Date Date Réctif</th><th>Numéro de chéque</th><th>Date envoi assistance</th><th>Date réception assistance</th>
+                        <th>Code Bordereau</th><th>Dénomination</th><th>Code Conventionné</th><th>Date Réception</th><th>Montant</th><th>Mois</th><th>Année</th><th>Date Date Réctif</th><th>Numéro de chéque</th><th>Date envoi assistance</th><th>Date réception assistance</th><th>Supprimer</th>
                     </tr>
 
                     <tr th:each="p:${SlipsPayed}">
                         <td th:text="${p.slipCode}"></td>
+                        <td th:text="${p.ContractedName}"></td>
                         <td th:text="${p.contractedCode}"></td>
                         <td th:text="${p.ReceptionDate}"></td>
                         <td th:text="${p.TotalAmount}"></td>
@@ -98,6 +119,33 @@
                         <td th:text="${p.Numerocheque}"></td>
                         <td th:text="${p.SendAssistantDate}"></td>
                         <td th:text="${p.BackAssistantDate}"></td>
+                        <td>
+                            <button  type="button" id="deletebuttonSlip" class="btn btn-danger float-lg-end" data-bs-toggle="modal" th:attr="data-bs-target='#deletemodalSlipPaiement'+${p.slipCode}" >Suprimer</button>
+
+                            <!-- ModalDelete -->
+
+                            <div class="MyformDelete">
+                                <div class="modal fade" th:id="'deletemodalSlipPaiement'+${p.slipCode}" tabindex="-1" role="dialog" aria-labelledby="exampleModalDelete" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLongTitle">Supprimer</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                êtes vous sure de vouloire supprimer le Paiement ?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                                                <a  th:href="@{/DeleteSlipPaiement(id=${p.slipCode})}"  class="btn btn-primary"   id="deletefinalbuttonSlipPaiement">Confirmer</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                        </td>
 
 
                     </tr>

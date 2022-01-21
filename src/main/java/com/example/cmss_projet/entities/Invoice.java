@@ -21,10 +21,12 @@ public class Invoice {
     public Long slipCode;
     public String Regie;
     public float amount;
+    public float amountNet;
     public float Agent;
     public float Ascendant;
     public float precompte;
     @Column(columnDefinition = "integer default 0")
     public int status;
+    public String ContractedName;
 
 }

@@ -20,6 +20,7 @@ public class Slip  {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long slipCode;
     public String contractedCode;
+    public String ContractedName;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     public LocalDate ReceptionDate;
     @Min(2)
@@ -39,6 +40,9 @@ public class Slip  {
     @Column(columnDefinition = "integer default 0")
     public int statusPaiement;
     public int Numerocheque;
+
+
+
 
 
 

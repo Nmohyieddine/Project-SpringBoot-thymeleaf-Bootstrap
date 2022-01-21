@@ -11,4 +11,6 @@ public class Regie {
     @Id
     public Long idRegie;
     public  String RegieName;
+    public String Ville;
+
 }

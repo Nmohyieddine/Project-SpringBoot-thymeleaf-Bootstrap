@@ -39,6 +39,11 @@ public class CustomLoginSuccesHandler implements AuthenticationSuccessHandler {
                 redirectUrl = "/PaiementSlip";
                 break;
             }
+            if (grantedAuthority.getAuthority().equals("ROLE_CEO")) {
+                redirectUrl = "/Consultation";
+                break;
+            }
+
         }
         System.out.println("redirectUrl " + redirectUrl);
         if (redirectUrl == null) {

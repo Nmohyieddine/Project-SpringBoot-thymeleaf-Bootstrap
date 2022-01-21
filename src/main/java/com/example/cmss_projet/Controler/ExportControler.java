@@ -88,33 +88,85 @@ public class ExportControler {
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
         String currentDateTime = dateFormatter.format(new Date());
 
-        String headerValue = "attachment; filename=BordereauxPayer" +currentDateTime+".xlsx";
-        response.setHeader(headerKey, headerValue);
+        if(conventionne.equals("false")){
+            if(StatusPaiement==1){
+                String headerValue = "attachment; filename=BordereauxPayé" +currentDateTime+".xlsx";
+                response.setHeader(headerKey, headerValue);
 
-        List<Slip> listSlipPaiement= slipRepositorie.findByStatusPaiementAndContractedCode(StatusPaiement,conventionne);
-        SlipExport excelExporter = new SlipExport(listSlipPaiement);
-        excelExporter.export(response);
+            }else {
+                String headerValue = "attachment; filename=BordereauxNonPayé" +currentDateTime+".xlsx";
+                response.setHeader(headerKey, headerValue);
+
+            }
+            List<Slip> listSlipPaiement= slipRepositorie.findAllByStatusPaiement(StatusPaiement);
+            SlipExport excelExporter = new SlipExport(listSlipPaiement);
+            excelExporter.export(response);
+
+        }else{
+
+            String denomination=contractedRepositorie.finddenomination(conventionne);
+
+            if(StatusPaiement==1){
+                String headerValue = "attachment; filename=Bordereau_"+denomination+"_Payé" +currentDateTime+".xlsx";
+                response.setHeader(headerKey, headerValue);
+
+            }else {
+                String headerValue = "attachment; filename=Bordereaux_"+denomination+"_NonPayé" +currentDateTime+".xlsx";
+                response.setHeader(headerKey, headerValue);
+
+            }
+
+
+            List<Slip> listSlipPaiement= slipRepositorie.findByStatusPaiementAndContractedCode(StatusPaiement,conventionne);
+            SlipExport excelExporter = new SlipExport(listSlipPaiement);
+            excelExporter.export(response);
+
+        }
+
+
 
 
 
 
     }
     @PostMapping("/exportInvoicePaiement")
-    public void exportToExcelInvoice(HttpServletResponse response, @RequestParam(value = "slipcode") Long slipcode) throws IOException {
+    public void exportToExcelInvoice(HttpServletResponse response, @RequestParam(value = "slipcode") String  slipcode) throws IOException {
 
         response.setContentType("application/octet-stream");
         String headerKey = "Content-Disposition";
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
         String currentDateTime = dateFormatter.format(new Date());
 
-        String headerValue = "attachment; filename=BordereauxPayer" +currentDateTime+".xlsx";
-        response.setHeader(headerKey, headerValue);
 
-        List<Invoice> listInvoice= invoiceRepositorie.findBySlipCode(slipcode);
+        if(slipcode.equals("false")) {
 
-        InvoiceExport excelExporter = new InvoiceExport(listInvoice);
+            String headerValue = "attachment; filename=DétailBordereaux" +currentDateTime+".xlsx";
 
-        excelExporter.export(response);
+            response.setHeader(headerKey, headerValue);
+
+            List<Invoice> listInvoice= invoiceRepositorie.findAll();
+
+            InvoiceExport excelExporter = new InvoiceExport(listInvoice);
+
+            excelExporter.export(response);
+
+        }else{
+
+            Long SLIPCODE=Long.parseLong(slipcode);
+
+            String headerValue = "attachment; filename=DétailBordereau_"+slipcode+"_"+currentDateTime+".xlsx";
+
+            response.setHeader(headerKey, headerValue);
+
+            List<Invoice> listInvoice= invoiceRepositorie.findInvoiceBySlipCode(SLIPCODE);
+
+            InvoiceExport excelExporter = new InvoiceExport(listInvoice);
+
+            excelExporter.export(response);
+
+
+        }
+
 
 
 

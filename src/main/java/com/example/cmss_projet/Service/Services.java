@@ -1,5 +1,6 @@
 package com.example.cmss_projet.Service;
 
+import com.example.cmss_projet.Repositories.BankcheckRepositorie;
 import com.example.cmss_projet.Repositories.ContractedRepositorie;
 import com.example.cmss_projet.Repositories.InvoiceRepositorie;
 import com.example.cmss_projet.Repositories.SlipRepositorie;
@@ -26,10 +27,19 @@ public  class Services {
     private InvoiceRepositorie invoiceRepositorie;
     @Autowired
     private ContractedRepositorie contractedRepositorie;
+    @Autowired
+    private BankcheckRepositorie bankcheckRepositorie;
 
     public void changestatusSlip(Long id){
-        Slip s=slipRepositorie.findById(id).get();
+        Slip s=slipRepositorie.findBySlipCode(id);
         s.setStatus(1);
+        slipRepositorie.save(s);
+
+    }
+
+    public void changestatusPaiementSlip(Long id ){
+        Slip s=slipRepositorie.findBySlipCode(id);
+        s.setStatusPaiement(1);
         slipRepositorie.save(s);
 
     }
@@ -42,11 +52,11 @@ public  class Services {
 
     }
 
-    public void changestatusSlipObject(ArrayList<Slip> slipList){
+    public void changestatusSlipObject(List<Slip> slipList){
 
         for(Slip slip:slipList){
 
-            changestatusSlip(slip.slipCode);
+            changestatusPaiementSlip(slip.slipCode);
 
         }
     }
@@ -60,13 +70,56 @@ public  class Services {
 
     }
 
-    public Page<Slip> cherche(String keyword, Pageable pageable){
+    public Page<Slip> cherche(String keyword,int Status,int StatusPaiement ,Pageable pageable){
         Page<Slip> Listofcherche;
         if(keyword!=null){
-            Listofcherche =slipRepositorie.chercher(keyword,1,0,pageable);
+            Listofcherche =slipRepositorie.chercher(keyword,Status,StatusPaiement,pageable);
+        }
+        else {
+            Listofcherche=slipRepositorie.findAllByStatusAndStatusPaiement(Status,StatusPaiement,pageable);
+        }
+
+        return Listofcherche;
+
+
+    }
+
+    public Page<Slip> chercheAll(String keyword,Pageable pageable){
+        Page<Slip> Listofcherche;
+        if(keyword!=null){
+            Listofcherche =slipRepositorie.chercherAll(keyword,pageable);
         }
         else {
             Listofcherche=slipRepositorie.findAll(pageable);
+        }
+
+        return Listofcherche;
+
+
+    }
+    public Page<Slip> chercheVentiler(String keyword,int status,Pageable pageable){
+        Page<Slip> Listofcherche;
+        if(keyword!=null){
+            Listofcherche =slipRepositorie.chercherAllVentiler(keyword,status,pageable);
+        }
+        else {
+            Listofcherche=slipRepositorie.findAllByStatus(status,pageable);
+        }
+
+        return Listofcherche;
+
+
+    }
+
+
+    public Page<Bankcheck> chercheAllBankchek(String keyword,Pageable pageable){
+        Page<Bankcheck> Listofcherche;
+        if(keyword!=null){
+            int numero=Integer.parseInt(keyword);
+            Listofcherche =bankcheckRepositorie.findByCheckNumber(numero,pageable);
+        }
+        else {
+            Listofcherche=bankcheckRepositorie.findAll(pageable);
         }
 
         return Listofcherche;
@@ -83,7 +136,9 @@ public  class Services {
 
     public void updateSlip(Slip EditSlip){
 
-          slipRepositorie.save(EditSlip);
+        Contracted contracted=contractedRepositorie.findByContractedCode(EditSlip.contractedCode);
+
+
 
     }
 
@@ -99,15 +154,21 @@ public  class Services {
 
     }
 
-    public void bankcheckslip(Bankcheck bankcheck,ArrayList<Slip> slips){
+    public void bankcheckslip(Bankcheck bankcheck,List<Slip> slips){
 
 
         for(Slip s:slips){
-
-            s.setNumerocheque(bankcheck.getCheckNumber());
+            int numero=bankcheck.getCheckNumber();
+            s.setNumerocheque(numero);
+            slipRepositorie.save(s);
         }
 
 
+    }
+
+    public void deletInvoices(List<Invoice> Invoices){
+
+        invoiceRepositorie.deleteAll(Invoices);
     }
 
 

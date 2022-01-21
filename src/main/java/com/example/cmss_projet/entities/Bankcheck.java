@@ -15,14 +15,13 @@ public class Bankcheck {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long Checkid;
-    private int CheckNumber;
+    public int CheckNumber;
     private String Bank;
     private float amount;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate CheckDate;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate WithdrawalDate;
-    private String SlipPayed;
+    private LocalDate CheckDateRetirer;
 
 
 

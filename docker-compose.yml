@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+
+  mysql:
+    image: mysql:8.0
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=Ibn&sina2017
+      - MYSQL_USER=myapp-user
+      - MYSQL_PASSWORD=password
+    ports:
+      - 3306:3306
+
+  CMSS-App:
+    image: myapp-image-name-that-appears-when-you-run-docker-images
+    restart: on-failure
+    depends_on:
+      - mysql
+    ports:
+      - 8081:8080
+    environment:
+      - DATABASE_HOST=myapp-mysql
+      - DATABASE_USER=myapp-user
+      - DATABASE_PASSWORD=password
+      - DATABASE_NAME=MyAppDb
+      - DATABASE_PORT=3306

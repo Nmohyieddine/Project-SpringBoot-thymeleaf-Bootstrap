@@ -1,9 +1,13 @@
 package com.example.cmss_projet.Controler;
 
+import com.example.cmss_projet.Repositories.BankcheckRepositorie;
 import com.example.cmss_projet.Repositories.ContractedRepositorie;
+import com.example.cmss_projet.Repositories.InvoiceRepositorie;
 import com.example.cmss_projet.Repositories.SlipRepositorie;
 import com.example.cmss_projet.Service.Services;
+import com.example.cmss_projet.entities.Bankcheck;
 import com.example.cmss_projet.entities.Contracted;
+import com.example.cmss_projet.entities.Invoice;
 import com.example.cmss_projet.entities.Slip;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,6 +27,8 @@ import java.util.Optional;
 
 @Controller
 public class SlipController {
+    @Autowired
+    private  BankcheckRepositorie bankcheckRepositorie;
 
     @Autowired
     private SlipRepositorie slipRepositorie;
@@ -31,14 +37,22 @@ public class SlipController {
     private ContractedRepositorie contractedRepositorie;
 
     @Autowired
+    private InvoiceRepositorie invoiceRepositorie;
+
+
+
+    @Autowired
     private Services services;
 
     @GetMapping(path = "/Slip")
     public String Slip(Model model,
                        @RequestParam(name = "page", defaultValue = "0") int page,
-                       @RequestParam(name = "size", defaultValue = "6") int size) {
+                       @RequestParam(name = "size", defaultValue = "50") int size,
+                       @RequestParam(name = "keyword",defaultValue = "") String keyword ) {
 
-        Page<Slip> Slips = slipRepositorie.findAll(PageRequest.of(page, size));
+        //Page<Slip> Slips = slipRepositorie.findAll(PageRequest.of(page, size));
+        Page<Slip> Slips=services.chercheAll(keyword,PageRequest.of(page, size));
+
         model.addAttribute("Slips", Slips.getContent());
         model.addAttribute("CurrentPageSlip", page);
         List<Contracted> contracteds=contractedRepositorie.findAll();
@@ -55,18 +69,14 @@ public class SlipController {
 
     @PostMapping(path = "/saveSlip")
     public String saveSlip(@Valid @ModelAttribute("slip") Slip slip, BindingResult result , Model model) {
-        if(result.hasErrors()){
+
+        Contracted contracted=contractedRepositorie.findByContractedCode(slip.contractedCode);
+        slip.setContractedName(contracted.getDenomination());
+        slipRepositorie.save(slip);
 
 
-        }else {
-            slipRepositorie.save(slip);
-
-        }
         return "redirect:/Slip";
 
-
-        //Contracted contracted=contractedRepositorie.findByContractedCode(slip.contractedCode);
-        //contracted.getSlip().add(slip);
 
     }
     @PostMapping(path = "/saveComplete")
@@ -82,12 +92,17 @@ public class SlipController {
     @GetMapping(path = "/SlipVentiler")
     public String SlipVentiler(Model model,
                                @RequestParam(name = "page", defaultValue = "0") int page,
-                               @RequestParam(name = "size", defaultValue = "6") int size) {
+                               @RequestParam(name = "size", defaultValue = "50") int size,
+                               @RequestParam(name = "keyword",defaultValue = "") String keyword) {
         Pageable pagination = PageRequest.of(page, size);
-        Page<Slip> Slips = slipRepositorie.findAllByStatus(1, pagination);
+        //Page<Slip> Slips = slipRepositorie.findAllByStatus(1, pagination);
+        Page<Slip> Slips=services.chercheVentiler(keyword,1,pagination);
+
+        List<Contracted> contracteds= contractedRepositorie.findAll();
+
         model.addAttribute("SlipsVentiler", Slips.getContent());
         model.addAttribute("CurrentPageSlipVentiler", page);
-
+        model.addAttribute("conventionne",contracteds);
         model.addAttribute("pageNumberVentiler", new int[Slips.getTotalPages()]);
 
 
@@ -99,10 +114,10 @@ public class SlipController {
     @GetMapping(path = "/PaiementSlip")
     public String PaiementSlip(Model model,
                                @RequestParam(name = "page", defaultValue = "0")int page,
-                               @RequestParam(name = "size",defaultValue = "4")int size,
+                               @RequestParam(name = "size",defaultValue = "50")int size,
                                @RequestParam(name = "keyword",defaultValue = "") String keyword){
         Pageable pageble=PageRequest.of(page, size);
-        Page<Slip> slipsPaiement=services.cherche(keyword,pageble);
+        Page<Slip> slipsPaiement=services.cherche(keyword,1,0,pageble);
 
         List<Contracted> contracteds=contractedRepositorie.findAll();
         model.addAttribute("conventionne",contracteds);
@@ -119,7 +134,7 @@ public class SlipController {
 
     }
 
-
+    //Paiement
     @PostMapping(path = "/Payer")
     public String Payer(@RequestParam(value = "slipPaiementcode",defaultValue = "[]") ArrayList<Long> slipPaiement){
             services.changestatusSlip(slipPaiement);
@@ -133,10 +148,14 @@ public class SlipController {
     @GetMapping(path = "/PayedSlip")
     public String PayedSlip(Model model,
                                @RequestParam(name = "page", defaultValue = "0")int page,
-                               @RequestParam(name = "size",defaultValue = "4")int size){
+                               @RequestParam(name = "size",defaultValue = "50")int size,
+                                @RequestParam(name = "keyword",defaultValue = "") String keyword){
 
-        Page<Slip> slipsPayed=slipRepositorie.findAllByStatusAndStatusPaiement(1,1,PageRequest.of(page, size));
+        //Page<Slip> slipsPayed=slipRepositorie.findAllByStatusAndStatusPaiement(1,1,PageRequest.of(page, size));
+        Page<Slip> slipsPayed=services.cherche(keyword,1,1,PageRequest.of(page, size));
 
+        List<Contracted> contracteds=contractedRepositorie.findAll();
+        model.addAttribute("conventionne",contracteds);
         model.addAttribute("SlipsPayed",slipsPayed.getContent());
 
         model.addAttribute("currentpageslipPayed",page);
@@ -155,6 +174,36 @@ public class SlipController {
         return "redirect:/Slip";
 
     }
+
+    @GetMapping(path = "/DeleteSlipPaiement")
+    public String DeleteSlipPaiement( @RequestParam(value = "id") Long id,@RequestParam(value = "page",defaultValue = "0") int page){
+
+        Optional<Slip> SlipPaiement=slipRepositorie.findById(id);
+        SlipPaiement.get().setStatusPaiement(0);
+
+        Bankcheck bankcheck=bankcheckRepositorie.findCheckNumber(SlipPaiement.get().getNumerocheque());
+       bankcheckRepositorie.delete(bankcheck);
+
+        SlipPaiement.get().setNumerocheque(0);
+        slipRepositorie.save(SlipPaiement.get());
+
+
+        return "redirect:/PaiementSlip";
+
+    }
+
+    @GetMapping(path = "/DeleteSlipVentilation")
+    public String DeleteSlipVentilation( @RequestParam(value = "id") Long id,@RequestParam(value = "page",defaultValue = "0") int page){
+
+        Optional<Slip> SlipPaiement=slipRepositorie.findById(id);
+        SlipPaiement.get().setStatus(0);
+        List<Invoice> invoice=invoiceRepositorie.findBySlipCode(SlipPaiement.get().getSlipCode());
+        services.deletInvoices(invoice);
+
+        return "redirect:/SlipVentilation";
+
+    }
+
     @RequestMapping(value = "/EditSlip")
     public String EditSlip(Slip S){
         Slip slip=slipRepositorie.findBySlipCode(S.slipCode);
@@ -164,6 +213,8 @@ public class SlipController {
         slip.setYearSlip(S.YearSlip);
         slip.setTotalAmount(S.TotalAmount);
         slip.setChangeDate(S.ChangeDate);
+        Contracted contracted=contractedRepositorie.findByContractedCode(slip.contractedCode);
+        slip.setContractedName(contracted.getDenomination());
         slipRepositorie.save(slip);
         return "redirect:/Slip";
 

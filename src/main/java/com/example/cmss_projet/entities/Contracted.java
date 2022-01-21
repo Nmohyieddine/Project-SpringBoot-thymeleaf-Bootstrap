@@ -26,9 +26,5 @@ public class Contracted{
      private int DurationToPay;
 
 
-     @OneToMany(
-             cascade = CascadeType.ALL,
-             orphanRemoval = true)
-     private List<Slip> Slip =new ArrayList<>();
 
 }
